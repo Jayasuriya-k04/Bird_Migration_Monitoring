@@ -133,7 +133,16 @@ if api_key:
             st.subheader(f"📍 Predicted Locations of {selected_bird} ({time_label})")
             st_folium(m, width=1000, height=600)
 
-            st.subheader("📊 Detection Table")
+            # Ensure correct data types and descending sort
+            df_filtered['timestamp'] = pd.to_datetime(df_filtered['timestamp'], errors='coerce')
+            df_display = df_filtered.sort_values(by='timestamp', ascending=False).copy()
+
+            # Reset index for clean table
+            df_display.reset_index(drop=True, inplace=True)
+
+            # Display latest first
+            st.subheader("📊 Detection Table (Latest First)")
             st.dataframe(df_display[['timestamp', 'latitude', 'longitude', 'common_name']])
+
         else:
             st.warning("No data to display for selected filters.")
