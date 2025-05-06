@@ -137,5 +137,9 @@ if api_key:
 
             st.subheader(f"📍 Predicted Locations of {selected_bird} ({time_label})")
             st_data = st_folium(m, width=1000, height=600)
+
+            st.subheader("📋 Filtered Data Table")
+            st.dataframe(df_filtered.reset_index(drop=True), use_container_width=True)
         else:
             st.warning("No data to display for selected filters.")
+
