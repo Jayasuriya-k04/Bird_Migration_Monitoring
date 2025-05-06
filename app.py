@@ -133,9 +133,7 @@ if api_key:
             st.subheader(f"📍 Predicted Locations of {selected_bird} ({time_label})")
             st_folium(m, width=1000, height=600)
 
-            # TABLE: Show in descending order
-            df_display = df_filtered.sort_values(by='timestamp', ascending=False)
-            st.subheader("📊 Detection Table (Latest First)")
+            st.subheader("📊 Detection Table")
             st.dataframe(df_display[['timestamp', 'latitude', 'longitude', 'common_name']])
         else:
             st.warning("No data to display for selected filters.")
