@@ -48,7 +48,7 @@ if api_key:
     @st.cache_data(ttl=30)
     def load_data():
         conn = sqlitecloud.connect(f"sqlitecloud://cks7jse1nz.g1.sqlite.cloud:8860/birds.db?apikey={api_key}")
-        query = "SELECT * FROM detections"
+        query = "SELECT * FROM detections ORDER BY date DESC, time DESC"
         df = pd.read_sql(query, conn)
         conn.close()
         return df
