@@ -140,6 +140,7 @@ if api_key:
 
             # Heading should appear ABOVE the table
             st.subheader("📊 Detection Table (Latest First)")
+            st.markdown("<br>", unsafe_allow_html=True)
             st.dataframe(df_display)  # Show all columns
 
 
