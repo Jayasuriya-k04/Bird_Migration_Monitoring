@@ -26,7 +26,7 @@ st.markdown("""
         [data-testid="collapsedControl"] {
             display: none;
         }
-        .stDataFrame { margin-top: -40px; } /* reduce space between map and table */
+        .stDataFrame { margin-top: -30px; } /* reduce space between map and table */
     </style>
 """, unsafe_allow_html=True)
 
@@ -48,7 +48,7 @@ if api_key:
     @st.cache_data(ttl=30)
     def load_data():
         conn = sqlitecloud.connect(f"sqlitecloud://cks7jse1nz.g1.sqlite.cloud:8860/birds.db?apikey={api_key}")
-        query = "SELECT * FROM detections"
+        query = "SELECT * FROM detections ORDER BY DESC date, time"
         df = pd.read_sql(query, conn)
         conn.close()
         return df
@@ -133,15 +133,20 @@ if api_key:
             st.subheader(f"📍 Predicted Locations of {selected_bird} ({time_label})")
             st_folium(m, width=1000, height=600)
 
-           # Ensure timestamp is parsed correctly and sort in descending order
+            # Ensure timestamp is parsed and used for sorting
             df_filtered['timestamp'] = pd.to_datetime(df_filtered['timestamp'], errors='coerce')
-            df_display = df_filtered.sort_values(by='timestamp', ascending=False).copy()
-            df_display.reset_index(drop=True, inplace=True)
 
-            # Heading should appear ABOVE the table
+            # Sort in descending order (latest first) and reset index
+            df_display = df_filtered.sort_values(by='timestamp', ascending=False).reset_index(drop=True)
+
+            # Display heading above the table
             st.subheader("📊 Detection Table (Latest First)")
+
+            # Add a one-line gap before the table
             st.markdown("<br>", unsafe_allow_html=True)
-            st.dataframe(df_display)  # Show all columns
+
+            # Display the dataframe with all columns
+            st.dataframe(df_display, use_container_width=True)
 
 
         else:
