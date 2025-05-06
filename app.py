@@ -134,7 +134,7 @@ if api_key:
             st_folium(m, width=1000, height=600)
 
             # TABLE: Show in descending order
-            df_display = df_filtered.sort_values(by='timestamp', ascending=False)
+            df_display = df_filtered.sort_values(by='timestamp', ascending=True)
             st.subheader("📊 Detection Table (Latest First)")
             st.dataframe(df_display[['timestamp', 'latitude', 'longitude', 'common_name']])
         else:
